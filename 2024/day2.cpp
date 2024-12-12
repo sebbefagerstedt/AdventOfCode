@@ -9,39 +9,47 @@
 int main() {
     std::ifstream report_list;
     std::string line;
-    int number_safe_levels = 0;
-    
-    report_list.open("day2data.txt");
+    int number_safe_levels = 0;    
+    report_list.open("C:/Users/sebas/projekt/AdventOfCode/2024/day2data.txt");
 
     if ( report_list.is_open() ) { 
         while (std::getline(report_list, line)) {
             std::vector<int> levels;
-            int number_of_increasing = 0;
             std::istringstream ss(line);
             int level;
-            bool safe_report = true;
 
             while (ss >> level) {
                 levels.push_back(level);
             }
 
-            for (int i = 1; i < levels.size(); i++) {
-                if (levels[i] > levels[i-1]) {
-                    number_of_increasing++;
-                } 
+            int safe_modified_reports = 0;
+            
+            for (int a = 0; a < levels.size(); ++a){
+                int safe_level = true;
+                int number_of_increasing = 0;
+                std::vector<int> modifiedLevels = levels;
+                modifiedLevels.erase(modifiedLevels.begin() + a);
 
-                if (std::abs(levels[i] - levels[i-1]) < 1 || std::abs(levels[i] - levels[i-1]) > 3) {
-                    safe_report = false;
-                    break;
+                for (int i = 1; i < modifiedLevels.size(); i++) {
+                    if (modifiedLevels[i] > modifiedLevels[i-1]) {
+                        number_of_increasing++;
+                    } 
+
+                    if (std::abs(modifiedLevels[i] - modifiedLevels[i-1]) < 1 || std::abs(modifiedLevels[i] - modifiedLevels[i-1]) > 3) {
+                        safe_level = false;
+                    }
+                }
+
+                if ((number_of_increasing == levels.size() - 2 || number_of_increasing == 0) && safe_level) {
+                    safe_modified_reports++;
                 }
             }
-            std::cout << "increasing: " << std::fixed << std::setprecision(0) << number_of_increasing << std::endl;
-            std::cout << "safe report: " << safe_report << std::endl;
-
-            if ((number_of_increasing == levels.size() - 1 || number_of_increasing == 0) && safe_report) {
+                
+            if (safe_modified_reports != 0 ) {
                 number_safe_levels++;
             }
         }
+
     }
 
     report_list.close();
