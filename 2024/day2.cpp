@@ -10,7 +10,7 @@ int main() {
     std::ifstream report_list;
     std::string line;
     int number_safe_levels = 0;    
-    report_list.open("C:/Users/sebas/projekt/AdventOfCode/2024/day2data.txt");
+    report_list.open("day2data.txt");
 
     if ( report_list.is_open() ) { 
         while (std::getline(report_list, line)) {
