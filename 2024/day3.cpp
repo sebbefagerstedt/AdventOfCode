@@ -21,19 +21,15 @@ int main() {
         std::regex pattern(R"(mul\((\d+),(\d+)\))"); //divided into 3 parts 0 is the full, 1 is first int and 2 is second int
         std::string do_string = "do()";
         std::string dont_string = "don't()";
-        size_t position_dont;
-        size_t next_position_do;
 
-        while (content.find(dont_string) != std::string::npos) {
-            // finds index of next occuring "don't"
-            position_dont = content.find(dont_string);
+        size_t position_dont = 0;
+        while ((position_dont = content.find(dont_string, position_dont)) != std::string::npos) {
+            size_t next_position_do;
 
-            // finds index of next do() command that occurs after the don't command
-            std::string leftover_content = content.substr(position_dont,content.size()); 
-            next_position_do = leftover_content.find(do_string);
-
-            // erases next_position_do index amount of character from content starting from "don't" 
-            content.erase(position_dont, next_position_do);
+            // std::string leftover_content = content.substr(position_dont,content.size()); 
+            next_position_do = content.find(do_string, position_dont);
+            int char_to_rem = (next_position_do != std::string::npos) ? next_position_do - position_dont : content.size() - position_dont;
+            content.erase(position_dont, char_to_rem);
         }
         
         auto words_begin = std::sregex_iterator(content.begin(), content.end(), pattern);
@@ -46,7 +42,12 @@ int main() {
             sum += num1*num2;
         }
         
+    } else {
+        std::cerr << "Error: Could not open the file!" << std::endl;
+        return 1;  // Exit the program with an error code
     }
+    
+
     file.close();
     std::cout << std::fixed << std::setprecision(0) << sum << std::endl;
     return 0;
