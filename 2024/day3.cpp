@@ -11,8 +11,8 @@ int main() {
     std::ifstream file;
     double sum = 0;
 
-    // file.open("C:/Projects/AdventOfCode/day3data.txt");
-    file.open("C:/Users/sebas/projekt/AdventOfCode/2024/day3data.txt");
+    file.open("C:/Projects/AdventOfCode/2024/day3data.txt");
+    // file.open("C:/Users/sebas/projekt/AdventOfCode/2024/day3data.txt");
 
     if ( file.is_open() ) { 
         std::stringstream buffer;
