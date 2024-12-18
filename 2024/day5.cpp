@@ -51,7 +51,6 @@ void improve_update(std::vector<int> &list, std::vector<std::pair<int, int>> &ru
             if (list[i] == pair.second && std::find(pages_done.begin(), pages_done.end(), pair.first) == pages_done.end() && first_it != list.end()) {
                 std::size_t first_index = std::distance(list.begin(), first_it);
                 auto second_it = list.begin() + i;  
-                std::size_t second_index = std::distance(list.begin(), second_it);
                 list.insert(second_it, pair.first);
                 list.erase(list.begin() + first_index + 1);
                 break;
@@ -68,7 +67,6 @@ int main() {
     int sum_of_middle_numbers = 0;
     int sum_of_middle_numbers_improved_updates = 0;
 
-
     file.open("day5data.txt");
     if ( !file.is_open() ) {
         std::cerr << "Error: Could not open the file!" << std::endl;
@@ -78,8 +76,7 @@ int main() {
     processData(file, rules, updates);
     file.close();
 
-    for (std::vector<int>& list : updates) {
-        
+    for (std::vector<int>& list : updates) { 
         if (is_ok_update(list, rules)) {
             sum_of_middle_numbers += list[list.size() / 2];
         } else {
