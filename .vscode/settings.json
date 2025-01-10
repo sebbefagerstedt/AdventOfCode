@@ -53,6 +53,8 @@
         "locale": "cpp",
         "regex": "cpp",
         "xlocbuf": "cpp",
-        "xlocmes": "cpp"
+        "xlocmes": "cpp",
+        "set": "cpp",
+        "xtree": "cpp"
     }
 }
