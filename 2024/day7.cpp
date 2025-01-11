@@ -38,6 +38,8 @@ bool equationIsValid(const long long result, const std::vector<int>& equation, s
         totalCombinations *= baseNumber;
     }
 
+    //int totalCombitations = 1 << operatorTypes.size(); only works for base 2
+
     for (int i = 0; i < totalCombinations; i++) {
         std::vector<int> operatorCombination;
         std::vector<std::string> operators;
@@ -46,7 +48,9 @@ bool equationIsValid(const long long result, const std::vector<int>& equation, s
         for (int j = 0; j < numOperators; j++) {
             operators.push_back(operatorTypes[currentCombination % baseNumber]);
             currentCombination /= baseNumber;
+            // operators.push_back(operatorTypes[(i >> j) & 1 ? 1 : 0]); //only works for base 2
         }
+
 
         long long equationResult = evaluate(equation, operators);
         if (result == equationResult) {
@@ -63,7 +67,7 @@ int main() {
     std::vector< std::vector <int>> equations;
     std::vector< long long> results;
     std::vector<std::string> operatorTypes;
-    bool part1 = false;
+    bool part1 = true;
     long long sumValidEquations = 0;
 
     file.open("C:/Users/sebas/projekt/AdventOfCode/2024/day7data.txt");
