@@ -155,7 +155,7 @@ int main() {
 
         for (int i = 0; i < map.size(); i++) {
             for (int j = 0; j < map[i].size(); j++) {
-                if (i == 79 && j == 87 ) {
+                if (i == 79 && j == 87 ) { //startPos
                     continue;
                 }
                 bool guard_leaving = false;
