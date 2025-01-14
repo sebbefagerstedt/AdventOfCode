@@ -25,36 +25,13 @@ void partOne(std::vector<std::string> &blocks) {
     } 
 }
 
-void moveFiles(std::vector<std::string> &blocks, std::vector<std::string>& bannedIds, int& maxId) {
-    // auto itFirstEmptyBlock = std::find(blocks.begin(), blocks.end(), ".");
-
-    // int indexOfFirstEmptyBlock = std::distance(blocks.begin(), itFirstEmptyBlock);
-    // // std::cout << "empty block startindex: " << indexOfFirstEmptyBlock << std::endl;
-
-    // auto itNextUsedBlock = std::find_if(itFirstEmptyBlock, blocks.end(), [](std::string s) { return s != ".";});
-
-    // int numberOfEmptyBlocks = std::distance(itFirstEmptyBlock, itNextUsedBlock);
-
-    // std::cout << "no . empty blocks: " << numberOfEmptyBlocks << std::endl;
+void moveFiles(std::vector<std::string> &blocks, int& maxId) {
     auto itLastFileEnd = std::find_if(blocks.rbegin(), blocks.rend(), [&maxId](std::string s) {
-        return s != "." && std::stoi(s) < maxId; //Can use int instead
+        return s != "." && std::stoi(s) < maxId;
     });
-
-    // bannedIds.push_back(*itLastFileEnd);
-
-    // std::cout << "first block startindex from end: " << std::distance(blocks.rbegin(), itLastFileEnd) << std::endl;
-    
+    maxId--;
     auto itLastFileStart = std::find_if(itLastFileEnd, blocks.rend(), [itLastFileEnd](std::string s) { return s !=*itLastFileEnd;});
-
-    // std::cout << "first block endindex from end: " << std::distance(itLastFileEnd, itLastFileStart) << std::endl;
-
     int numberOfFileBlocks = std::distance(itLastFileEnd, itLastFileStart);
-    // std::cout << "found file with id " << *itLastFileEnd << " which is " << numberOfFileBlocks << " file blocks long" << std::endl;
-    
-    if (std::stoi(*itLastFileEnd) % 100 == 0) {
-        int percent = 100 - std::stoi(*itLastFileEnd) / 100;
-        std::cout << percent << " percent DONE..." << std::endl;
-    }
 
     std::vector<std::string> pattern(numberOfFileBlocks, ".");
     auto itFirstAvailable = std::search(blocks.begin(), blocks.end(), pattern.begin(), pattern.end());
@@ -62,10 +39,9 @@ void moveFiles(std::vector<std::string> &blocks, std::vector<std::string>& banne
     if (itFirstAvailable == blocks.end()) {
         return;
     }
+
     int indexOfFirstEmptyBlock = std::distance(blocks.begin(), itFirstAvailable);
-        
     int startIndexOfLastFile = blocks.size() - std::distance(blocks.rbegin(), itLastFileStart);
-    // std::cout << "last file startindex: " << startIndexOfLastFile << std::endl;
     
     if (indexOfFirstEmptyBlock > startIndexOfLastFile) {
         return;
@@ -74,56 +50,19 @@ void moveFiles(std::vector<std::string> &blocks, std::vector<std::string>& banne
     for (int i = 0; i < numberOfFileBlocks; i++) {
         std::swap(blocks[startIndexOfLastFile + i], blocks[indexOfFirstEmptyBlock + i]);
     }
-
-    // else {
-    //     itFirstEmptyBlock = std::find(itNextUsedBlock, blocks.end(), ".");
-
-    //     if (std::find_if(itFirstEmptyBlock, blocks.end(), [](std::string s) { return s != ".";}) != blocks.end()) {
-    //         moveFiles(blocks, bannedIds);
-    //     } else {
-    //         bannedIds.push_back(*itLastFileEnd);
-    //     }
-    // }
 }
 
 void partTwo(std::vector<std::string> &blocks, const int& id) {
-    // std::cout << "BEFORE SWAP" << std::endl;
-
-    // for (int i = 0; i < blocks.size(); i++) {
-    //     std::cout << blocks[i];
-    // }
-    // std::cout << std::endl;
-    // auto itFirstEmptyBlo = std::find(blocks.begin(), blocks.end(), ".");
-    int iterations = 1;
-    std::vector<std::string> bannedIds;
     int maxId = id;
-    // if (itFirstEmptyBlo != blocks.end()) {
-        // while (std::find(bannedIds.begin(), bannedIds.end(), *blocks.begin()) == bannedIds.end()) {
-        for (int i = 0; i < id; i++) {
-            moveFiles(blocks, bannedIds, maxId);
-            maxId--;
-            // itFirstEmptyBlo = std::find(blocks.begin(), blocks.end(), ".");
-
-            // std::cout << "AFTER SWAP: " << iterations++ << std::endl;
-            // for (int i = 0; i < blocks.size(); i++) {
-            //     std::cout << blocks[i];
-            // }
-            // std::cout << std::endl;
-
-            // std::cout << "BANNED IDs: ";
-            // for (int i = 0; i < bannedIds.size(); i++) {
-            //     std::cout << bannedIds[i] << " ";
-            // }
-            // std::cout << std::endl;
-        }
-    // } 
+    for (int i = 0; i < id; i++) {
+        moveFiles(blocks, maxId);
+    }
 }
 
 int main() {
     std::ifstream file;
-    // file.open("C:/Projects/AdventOfCode/2024/day9data.txt");
-    // file.open("C:/Projects/AdventOfCode/2024/day9data.txt");
-    file.open("C:/Users/sebas/projekt/AdventOfCode/2024/day9data.txt");
+    file.open("C:/Projects/AdventOfCode/2024/day9data.txt");
+    // file.open("C:/Users/sebas/projekt/AdventOfCode/2024/day9data.txt");
 
 
     if ( !file.is_open() ) {
@@ -148,7 +87,6 @@ int main() {
             blocks.push_back(stringToAdd);
         }
     }
-    // std::cout << id;
     
     if (part1) {
         partOne(blocks);
